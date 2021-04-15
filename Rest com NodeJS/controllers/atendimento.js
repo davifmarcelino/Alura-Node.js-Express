@@ -1,24 +1,38 @@
-const Atendimento = require("../models/atendimento");
+const Atendimentos = require("../models/atendimentos");
 
 module.exports = (app) => {
-  app.get("/atendimentos", (req, res) => Atendimento.index(res));
+  app.get("/atendimentos", (req, res) =>
+    Atendimentos.index()
+      .then((result) => {
+        res.status(200).json(result);
+      })
+      .catch((error) => {
+        res.status(400).json(error);
+      })
+  );
 
   app.get("/atendimentos/:id", (req, res) => {
     const id = parseInt(req.params.id);
-    Atendimento.show(id, res);
+    Atendimentos.show(id, res);
   });
 
   app.post("/atendimentos", (req, res) => {
-    Atendimento.store(req.body, res);
+    Atendimentos.store(req.body)
+      .then((result) => {
+        res.status(200).json(result);
+      })
+      .catch((error) => {
+        res.status(400).json(error);
+      });
   });
 
   app.patch("/atendimentos/:id", (req, res) => {
     const id = parseInt(req.params.id);
-    Atendimento.update(id, req.body, res);
+    Atendimentos.update(id, req.body, res);
   });
 
   app.delete("/atendimentos/:id", (req, res) => {
     const id = parseInt(req.params.id);
-    Atendimento.delete(id, res);
+    Atendimentos.delete(id, res);
   });
 };
